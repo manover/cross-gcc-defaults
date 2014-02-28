@@ -1,0 +1,6 @@
+Package: $DEB_TARGET_GNU_TYPE-$prog
+Architecture: $HOST_LIST
+Section: devel
+Depends: ${misc:Depends}
+Description: $desc
+ $desc_long

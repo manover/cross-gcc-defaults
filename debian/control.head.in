@@ -1,0 +1,8 @@
+Source: cross-gcc-defaults
+Section: devel
+Priority: optional
+Maintainer: Daniel Gröber <dxld@darkboxed.org>
+Build-Depends: debhelper (>= 8.0.0), devscripts
+Standards-Version: 3.9.4
+Vcs-Git: git://git.debian.org/git/crosstoolchain/cross-gcc-defaults
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=crosstoolchain/cross-gcc-defaults.git;a=summary

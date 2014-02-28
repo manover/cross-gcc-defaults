@@ -1,0 +1,25 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+export HOST_LIST ?= amd64 i386
+
+#export DH_VERBOSE=1
+%:
+	dh $@
+
+override_dh_auto_build:
+override_dh_auto_configure:
+override_dh_auto_test:
+
+override_dh_auto_install:
+	debian/install-links.sh
+
+override_dh_clean:
+	dh_clean
+	rm -rf debian/tmp
+
+control:
+	debian/generate-control.sh
+
+update-defaults:
+	debian/update-defaults.sh
