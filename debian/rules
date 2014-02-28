@@ -1,7 +1,8 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-export HOST_LIST ?= amd64 i386
+# HOST_LIST is fille in by `gensources' from cross-build
+export HOST_LIST
 
 #export DH_VERBOSE=1
 %:
