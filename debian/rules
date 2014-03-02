@@ -10,7 +10,8 @@ override_dh_auto_configure:
 override_dh_auto_test:
 
 override_dh_auto_install:
-	debian/install-links.sh
+	DEB_TARGET_ARCH="${DEB_TARGET_ARCH}" \
+	  debian/install-links.sh
 
 override_dh_clean:
 	dh_clean
