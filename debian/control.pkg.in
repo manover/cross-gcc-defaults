@@ -1,4 +1,4 @@
-Package: $DEB_TARGET_GNU_TYPE-$prog
+Package: $prog-$DEB_TARGET_GNU_TYPE
 Architecture: $HOST_LIST
 Section: devel
 Depends: ${misc:Depends}
