@@ -19,5 +19,7 @@ for prog in $PROG_LIST; do
 	| sed -e 's/$DEB_TARGET_GNU_TYPE/'"$DEB_TARGET_GNU_TYPE"'/' \
 	| sed -e 's/$DEB_TARGET_ARCH/'"$DEB_TARGET_ARCH"'/' \
 	| sed -e 's/$HOST_LIST/'"$HOST_LIST"'/' \
-	| sed -e 's/$prog/'"$prog"'/' >> debian/control
+	| sed -e 's/$prog/'"$prog"'/' \
+	| sed -e 's/$ver/'"$ver"'/' >> debian/control
+
 done
