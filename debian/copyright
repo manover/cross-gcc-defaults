@@ -3,10 +3,12 @@ Upstream-Name: cross-gcc-defaults
 
 Files: *
 Copyright: 2014 Daniel Gröber <dxld@darkboxed.org>
+           2014 Dima Kogan <dima@secretsauce.net>
 License: GPL-3.0+
 
 Files: debian/*
 Copyright: 2014 Daniel Gröber <dxld@darkboxed.org>
+           2014 Dima Kogan <dima@secretsauce.net>
 License: GPL-3.0+
 
 License: GPL-3.0+
