@@ -7,11 +7,10 @@ use autodie;
 use FindBin '$Bin';
 use IPC::Run 'run';
 
-# if [ ! -f debian/defaults ]; then
-#     echo "ERROR: Run ./debian/update-defaults.sh first" >&2
-#     exit 1
-# fi
-
+unless( -e 'debian/defaults' )
+{
+    die "ERROR: Run ./debian/update-defaults.sh first";
+}
 
 
 my $target_list_str = $ENV{TARGET_LIST} || `cat $Bin/targetlist` || ' ';
