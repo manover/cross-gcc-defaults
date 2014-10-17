@@ -23,14 +23,6 @@ override_dh_auto_install:
             done < debian/defaults;								\
 	done
 
-
 override_dh_clean:
 	dh_clean
 	rm -rf debian/tmp
-
-control:
-	DEB_TARGET_ARCH="${DEB_TARGET_ARCH}" HOST_LIST="${HOST_LIST}" \
-	  debian/generate-control.sh
-
-update-defaults:
-	debian/update-defaults.sh
