@@ -1,3 +1,9 @@
+cross-gcc-defaults (0.2) unstable; urgency=medium
+
+  * Finalized this work
+
+ -- Dima Kogan <dima@secretsauce.net>  Fri, 17 Oct 2014 14:48:23 -0700
+
 cross-gcc-defaults (0.1) unstable; urgency=low
 
   * Initial Release.
