@@ -9,9 +9,20 @@ override_dh_auto_build:
 override_dh_auto_configure:
 override_dh_auto_test:
 
+
+# I get the arches based on what's in my debian/control file
+ARCHES_GNU_TYPE := \
+  $(shell perl -ne \
+    'if(/Package: *[a-z0-9+_-]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
+    < debian/control | uniq)
+
 override_dh_auto_install:
-	DEB_TARGET_ARCH="${DEB_TARGET_ARCH}" \
-	  debian/install-links.sh
+	for arch in $(ARCHES_GNU_TYPE); do							\
+	    while read prog ver; do								\
+	        dh_link -p$$prog-$$arch usr/bin/$$arch-$$prog-$$ver usr/bin/$$arch-$$prog;	\
+            done < debian/defaults;								\
+	done
+
 
 override_dh_clean:
 	dh_clean
