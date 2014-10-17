@@ -1,4 +1,4 @@
-Source: cross-gcc-defaults-$DEB_TARGET_ARCH
+Source: cross-gcc-defaults
 Section: devel
 Priority: optional
 Maintainer: Daniel Gröber <dxld@darkboxed.org>
