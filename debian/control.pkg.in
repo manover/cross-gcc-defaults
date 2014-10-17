@@ -1,5 +1,5 @@
 Package: $prog-$DEB_TARGET_GNU_TYPE
-Architecture: $HOST_LIST
+Architecture: any
 Section: devel
 Depends: $prog-$ver-$DEB_TARGET_GNU_TYPE ${misc:Depends}
 Description: $desc
