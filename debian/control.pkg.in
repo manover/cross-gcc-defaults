@@ -2,5 +2,4 @@ Package: $prog-$DEB_TARGET_GNU_TYPE
 Architecture: any
 Section: devel
 Depends: $prog-$ver-$DEB_TARGET_GNU_TYPE ${misc:Depends}
-Description: $desc
- $desc_long
+Description: $description

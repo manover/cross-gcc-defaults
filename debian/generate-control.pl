@@ -19,15 +19,14 @@ my @target_list = split / /, $target_list_str or
 
 say "Generating debian/control for arches '@target_list'";
 
-my @progs;
+my @progvers;
 open my $fd_progs, '<', "$Bin/defaults";
 while(<$fd_progs>)
 {
     my ($prog,$ver) = split;
     next unless length($prog) && length($ver);
 
-    push @progs, {prog => $prog,
-                  ver  => $ver};
+    push @progvers, [$prog, $ver];
 }
 close $fd_progs;
 
@@ -61,8 +60,11 @@ for my $DEB_TARGET_ARCH (@target_list)
 
     say $fd_control_out "";
 
-    for my $progver (@progs)
+    for my $progver (@progvers)
     {
+        my ($prog,$ver) = @$progver;
+
+        my $description = description($prog, $DEB_TARGET_ARCH);
         say $fd_control_out "";
 
         open my $fd_control_in, '<', "$Bin/control.pkg.in";
@@ -70,11 +72,54 @@ for my $DEB_TARGET_ARCH (@target_list)
         {
             s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/;
 	    s/\$DEB_TARGET_ARCH/$DEB_TARGET_ARCH/;
-	    s/\$prog/$progver->{prog}/;
-	    s/\$ver/$progver->{ver}/;
+	    s/\$prog/$prog/;
+	    s/\$ver/$ver/;
+	    s/\$description/$description/;
 
 
             print $fd_control_out $_;
         }
     }
 }
+
+
+
+
+
+
+
+my %base_descriptions;
+sub description
+{
+    my $prog = shift;
+    my $arch = shift;
+
+    my $base;
+    if( $base_descriptions{$prog} )
+    {
+        $base = $base_descriptions{$prog};
+    }
+    else
+    {
+        my ($in,$out,$err) = ('','','');
+        run [qw(dpkg-query -f), '${Description}', '-W', $prog], \$in, \$out, \$err
+          or die "Error getting description from package '$prog'";
+
+        if( length($out) <= 0)
+        {
+            die "Error getting description from package '$prog': too short";
+        }
+
+        $base_descriptions{$prog} = $base = $out;
+    }
+
+    my $description = $base;
+    $description =~ s/$/ for architecture $arch/m;
+    return $description;
+}
+
+
+
+
+
+
