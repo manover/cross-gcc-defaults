@@ -1,6 +1,20 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+# Adjust these when we want to control which packages we release
+RELEASE := 4.9
+PROGS   := cpp gcc g++ gfortran
+
+# this is there so that generate-control.pl can ask about it
+say_progs_release:
+	@echo $(PROGS) $(RELEASE)
+.PHONY: say_progs_release
+
+
+
+
+
+
 #export DH_VERBOSE=1
 %:
 	dh $@
@@ -11,7 +25,7 @@ override_dh_auto_test:
 
 
 # I get the arches based on what's in my debian/control file
-ARCHES_GNU_TYPE := \
+ARCHES_GNU_TYPE = \
   $(shell perl -ne \
     'if(/Package: *[a-z0-9+_-]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
     < debian/control | uniq)

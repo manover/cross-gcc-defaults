@@ -53,29 +53,14 @@ my %base_descriptions = ( 'cpp'      => $description_cpp,
 
 
 
-unless( -e 'debian/defaults' )
-{
-    die "ERROR: Run ./debian/update-defaults.sh first";
-}
-
-
 my $target_list_str = $ENV{TARGET_LIST} || `cat $Bin/targetlist` || ' ';
 my @target_list = split / /, $target_list_str or
   die "Couldn't get target list from the TARGET_LIST env var, or from the file '$Bin/targetlist'";
 
 say "Generating debian/control for arches '@target_list'";
 
-my @progvers;
-open my $fd_progs, '<', "$Bin/defaults";
-while(<$fd_progs>)
-{
-    my ($prog,$ver) = split;
-    next unless length($prog) && length($ver);
-
-    push @progvers, [$prog, $ver];
-}
-close $fd_progs;
-
+my @progs   = split(/ /, runchild(qw(make -f), "$Bin/rules", 'say_progs_release'));
+my $release = pop @progs;
 
 open my $fd_control_out, '>', "$Bin/control";
 
@@ -106,12 +91,9 @@ for my $DEB_TARGET_ARCH (@target_list)
 
     say $fd_control_out "";
 
-    for my $progver (@progvers)
+    for my $prog (@progs)
     {
-        my ($prog,$ver) = @$progver;
-
         my $description = description($prog, $DEB_TARGET_ARCH);
-        say $fd_control_out "";
 
         open my $fd_control_in, '<', "$Bin/control.pkg.in";
         while(<$fd_control_in>)
@@ -119,7 +101,7 @@ for my $DEB_TARGET_ARCH (@target_list)
             s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/;
 	    s/\$DEB_TARGET_ARCH/$DEB_TARGET_ARCH/;
 	    s/\$prog/$prog/;
-	    s/\$ver/$ver/;
+	    s/\$ver/$release/;
 	    s/\$description/$description/;
 
 

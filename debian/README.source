@@ -6,10 +6,5 @@ we're interested in. For instance, one could do this:
 
  TARGET_LIST='armel armhf' debian/generate-control.pl 
 
-Another generated file is debian/defaults. These are shipped in the repository.
-One can also update this file from the defaults defined in the sources for the
-gcc-defaults package by running
-
- debian/update-defaults.sh
-
-It's pretty trivial to update by hand, however.
+To adjust the major version of gcc, or the list of packages that we generate,
+tweak the variables at the top of debian/rules
