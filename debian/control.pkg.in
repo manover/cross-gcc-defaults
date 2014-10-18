@@ -1,5 +1,6 @@
 Package: $prog-$DEB_TARGET_GNU_TYPE
 Architecture: all
+Multi-arch: foreign
 Section: devel
 Depends: $prog-$ver-$DEB_TARGET_GNU_TYPE ${misc:Depends}
 Description: $description
