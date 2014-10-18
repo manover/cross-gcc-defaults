@@ -85,10 +85,45 @@ for my $DEB_TARGET_ARCH (@target_list)
 
 
 
+my $description_cpp = <<'EOF';
+GNU C preprocessor (cpp)
+ The GNU C preprocessor is a macro processor that is used automatically
+ by the GNU C compiler to transform programs before actual compilation.
+ .
+ This package has been separated from gcc for the benefit of those who
+ require the preprocessor but not the compiler.
+ .
+ This is a dependency package providing the default GNU C preprocessor.
+EOF
 
+my $description_gcc = <<'EOF';
+GNU C compiler
+ This is the GNU C compiler, a fairly portable optimizing compiler for C.
+ .
+ This is a dependency package providing the default GNU C compiler.
+EOF
 
+my $description_gpp = <<'EOF';
+GNU C++ compiler
+ This is the GNU C++ compiler, a fairly portable optimizing compiler for C++.
+ .
+ This is a dependency package providing the default GNU C++ compiler.
+EOF
 
-my %base_descriptions;
+my $description_gfortran = <<'EOF';
+GNU Fortran 95 compiler
+ This is the GNU Fortran 95 compiler, which compiles Fortran 95 on platforms
+ supported by the gcc compiler. It uses the gcc backend to generate optimized
+ code.
+ .
+ This is a dependency package providing the default GNU Fortran 95 compiler.
+EOF
+
+my %base_descriptions = ( 'cpp'      => $description_cpp,
+                          'gcc'      => $description_gcc,
+                          'g++'      => $description_gpp,
+                          'gfortran' => $description_gfortran);
+
 sub description
 {
     my $prog = shift;
@@ -117,9 +152,3 @@ sub description
     $description =~ s/$/ for architecture $arch/m;
     return $description;
 }
-
-
-
-
-
-
