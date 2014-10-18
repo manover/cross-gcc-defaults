@@ -74,20 +74,8 @@ open my $fd_control_out, '>', "$Bin/control";
 
 for my $DEB_TARGET_ARCH (@target_list)
 {
-    my $DEB_TARGET_GNU_TYPE;
-    {
-        my ($in,$out,$err) = ('','','');
-        run [qw(dpkg-architecture -qDEB_HOST_GNU_TYPE -f), "-a$DEB_TARGET_ARCH"], \$in, \$out, \$err
-          or die "Error running dpkg-architecture. STDERR: '$err'";
-
-        $DEB_TARGET_GNU_TYPE = $out;
-        chomp $DEB_TARGET_GNU_TYPE;
-
-        if( !length($DEB_TARGET_GNU_TYPE))
-        {
-            die "Couldn't get the gnu type for arch '$DEB_TARGET_ARCH'";
-        }
-    }
+    my $DEB_TARGET_GNU_TYPE =
+      runchild(qw(dpkg-architecture -qDEB_HOST_GNU_TYPE -f), "-a$DEB_TARGET_ARCH");
 
     say $fd_control_out "";
 
@@ -125,19 +113,28 @@ sub description
     }
     else
     {
-        my ($in,$out,$err) = ('','','');
-        run [qw(dpkg-query -f), '${Description}', '-W', $prog], \$in, \$out, \$err
-          or die "Error getting description from package '$prog'";
-
-        if( length($out) <= 0)
-        {
-            die "Error getting description from package '$prog': too short";
-        }
-
-        $base_descriptions{$prog} = $base = $out;
+        $base_descriptions{$prog} = $base =
+          runchild(qw(dpkg-query -f), '${Description}', '-W', $prog);
     }
 
     my $description = $base;
     $description =~ s/$/ for architecture $arch/m;
     return $description;
+}
+
+sub runchild
+{
+    my @args = @_;
+
+    my ($in,$out,$err) = ('','','');
+    run \@args, \$in, \$out, \$err
+      or die "Error running '@args'. STDERR:\n$err";
+
+    chomp $out;
+    if( length($out) <= 0)
+    {
+        die "Error running '@args': output empty. STDERR:\n$err";
+    }
+
+    return $out;
 }
