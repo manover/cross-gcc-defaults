@@ -20,7 +20,7 @@ say_progs_release:
 	dh $@
 
 override_dh_auto_build:
-	grep Package: debian/	control | cut -d ' ' -f 2 | xargs -I{} cp debian/lintian-overrides debian/{}.lintian-overrides
+	grep Package: debian/control | cut -d ' ' -f 2 | xargs -I{} cp debian/lintian-overrides debian/{}.lintian-overrides
 
 override_dh_auto_configure:
 override_dh_auto_test:
