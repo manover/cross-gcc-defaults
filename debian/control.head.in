@@ -2,8 +2,8 @@ Source: cross-gcc-defaults
 Section: devel
 Priority: optional
 Maintainer: Debian Cross-Toolchain Team <debian-toolchain@lists.debian.org>
-Uploaders: Wookey <wookey@debian.org>, Dima Kogan <dima@debian.org>
+Uploaders: Wookey <wookey@debian.org>, Dima Kogan <dima@secretsauce.net>
 Build-Depends: debhelper (>= 9.0.0), devscripts
-Standards-Version: 3.9.5
+Standards-Version: 3.9.6
 Vcs-Git: git://anonscm.debian.org/crosstoolchain/cross-gcc-defaults.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=crosstoolchain/cross-gcc-defaults.git;a=summary

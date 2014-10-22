@@ -1,8 +1,9 @@
 cross-gcc-defaults (0.2) unstable; urgency=high
 
+  [ Dima Kogan ]
   * Finalized this work
 
- -- Dima Kogan <dima@secretsauce.net>  Fri, 17 Oct 2014 14:48:23 -0700
+ -- Wookey <wookey@debian.org>  Wed, 22 Oct 2014 23:23:46 +0100
 
 cross-gcc-defaults (0.1) unstable; urgency=low
 
