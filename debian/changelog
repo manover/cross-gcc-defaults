@@ -1,4 +1,4 @@
-cross-gcc-defaults (0.2) unstable; urgency=medium
+cross-gcc-defaults (0.2) unstable; urgency=high
 
   * Finalized this work
 

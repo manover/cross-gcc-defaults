@@ -53,29 +53,14 @@ my %base_descriptions = ( 'cpp'      => $description_cpp,
 
 
 
-unless( -e 'debian/defaults' )
-{
-    die "ERROR: Run ./debian/update-defaults.sh first";
-}
-
-
 my $target_list_str = $ENV{TARGET_LIST} || `cat $Bin/targetlist` || ' ';
 my @target_list = split / /, $target_list_str or
   die "Couldn't get target list from the TARGET_LIST env var, or from the file '$Bin/targetlist'";
 
 say "Generating debian/control for arches '@target_list'";
 
-my @progvers;
-open my $fd_progs, '<', "$Bin/defaults";
-while(<$fd_progs>)
-{
-    my ($prog,$ver) = split;
-    next unless length($prog) && length($ver);
-
-    push @progvers, [$prog, $ver];
-}
-close $fd_progs;
-
+my @progs   = split(/ /, runchild(qw(make -f), "$Bin/rules", 'say_progs_release'));
+my $release = pop @progs;
 
 open my $fd_control_out, '>', "$Bin/control";
 
@@ -89,29 +74,14 @@ open my $fd_control_out, '>', "$Bin/control";
 
 for my $DEB_TARGET_ARCH (@target_list)
 {
-    my $DEB_TARGET_GNU_TYPE;
-    {
-        my ($in,$out,$err) = ('','','');
-        run [qw(dpkg-architecture -qDEB_HOST_GNU_TYPE -f), "-a$DEB_TARGET_ARCH"], \$in, \$out, \$err
-          or die "Error running dpkg-architecture. STDERR: '$err'";
-
-        $DEB_TARGET_GNU_TYPE = $out;
-        chomp $DEB_TARGET_GNU_TYPE;
-
-        if( !length($DEB_TARGET_GNU_TYPE))
-        {
-            die "Couldn't get the gnu type for arch '$DEB_TARGET_ARCH'";
-        }
-    }
+    my $DEB_TARGET_GNU_TYPE =
+      runchild(qw(dpkg-architecture -qDEB_HOST_GNU_TYPE -f), "-a$DEB_TARGET_ARCH");
 
     say $fd_control_out "";
 
-    for my $progver (@progvers)
+    for my $prog (@progs)
     {
-        my ($prog,$ver) = @$progver;
-
         my $description = description($prog, $DEB_TARGET_ARCH);
-        say $fd_control_out "";
 
         open my $fd_control_in, '<', "$Bin/control.pkg.in";
         while(<$fd_control_in>)
@@ -119,7 +89,7 @@ for my $DEB_TARGET_ARCH (@target_list)
             s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/;
 	    s/\$DEB_TARGET_ARCH/$DEB_TARGET_ARCH/;
 	    s/\$prog/$prog/;
-	    s/\$ver/$ver/;
+	    s/\$ver/$release/;
 	    s/\$description/$description/;
 
 
@@ -143,19 +113,28 @@ sub description
     }
     else
     {
-        my ($in,$out,$err) = ('','','');
-        run [qw(dpkg-query -f), '${Description}', '-W', $prog], \$in, \$out, \$err
-          or die "Error getting description from package '$prog'";
-
-        if( length($out) <= 0)
-        {
-            die "Error getting description from package '$prog': too short";
-        }
-
-        $base_descriptions{$prog} = $base = $out;
+        $base_descriptions{$prog} = $base =
+          runchild(qw(dpkg-query -f), '${Description}', '-W', $prog);
     }
 
     my $description = $base;
     $description =~ s/$/ for architecture $arch/m;
     return $description;
+}
+
+sub runchild
+{
+    my @args = @_;
+
+    my ($in,$out,$err) = ('','','');
+    run \@args, \$in, \$out, \$err
+      or die "Error running '@args'. STDERR:\n$err";
+
+    chomp $out;
+    if( length($out) <= 0)
+    {
+        die "Error running '@args': output empty. STDERR:\n$err";
+    }
+
+    return $out;
 }

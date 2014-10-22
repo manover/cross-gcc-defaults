@@ -1,6 +1,20 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+# Adjust these when we want to control which packages we release
+RELEASE := 4.9
+PROGS   := cpp gcc g++ gfortran
+
+# this is there so that generate-control.pl can ask about it
+say_progs_release:
+	@echo $(PROGS) $(RELEASE)
+.PHONY: say_progs_release
+
+
+
+
+
+
 #export DH_VERBOSE=1
 %:
 	dh $@
@@ -9,9 +23,13 @@ override_dh_auto_build:
 override_dh_auto_configure:
 override_dh_auto_test:
 
+override_dh_installchangelogs:
+	dh_installchangelogs
+	find debian -name changelog \! -wholename debian/changelog | xargs -I{} mv {} {}.Debian
+
 
 # I get the arches based on what's in my debian/control file
-ARCHES_GNU_TYPE := \
+ARCHES_GNU_TYPE = \
   $(shell perl -ne \
     'if(/Package: *[a-z0-9+_-]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
     < debian/control | uniq)
@@ -26,3 +44,15 @@ override_dh_auto_install:
 override_dh_clean:
 	dh_clean
 	rm -rf debian/tmp
+
+
+# each package program-arch is Depends: program-arch-release (>=version)
+# where 'version' is the current version of gcc-release-base
+#
+# asking for the first line only because I can have multiple arches installed at
+# the same time, and I only want a single version.
+GCC_BASE_VERSION = \
+ $(or $(shell dpkg-query -f '$${Version}\n' -W gcc-$(RELEASE)-base | head -n1), \
+   $(error gcc-$(RELEASE)-base must be installed))
+override_dh_gencontrol:
+	ver=$(GCC_BASE_VERSION); dh_gencontrol -- -v$$ver -Vver=$$ver
