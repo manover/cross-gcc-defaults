@@ -20,6 +20,8 @@ say_progs_release:
 	dh $@
 
 override_dh_auto_build:
+	grep Package: debian/	control | cut -d ' ' -f 2 | xargs -I{} cp debian/lintian-overrides debian/{}.lintian-overrides
+
 override_dh_auto_configure:
 override_dh_auto_test:
 
@@ -43,7 +45,7 @@ override_dh_auto_install:
 
 override_dh_clean:
 	dh_clean
-	rm -rf debian/tmp
+	rm -f debian/*.lintian-overrides
 
 
 # each package program-arch is Depends: program-arch-release (>=version)
