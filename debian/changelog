@@ -1,9 +1,16 @@
+cross-gcc-defaults (0.4) unstable; urgency=low
+
+  * Added gobjc and gccgo to the default set of cross-toolchains built
+  * Re-instated mips
+
+ -- Wookey <wookey@debian.org>  Tue, 04 Nov 2014 05:19:04 +0000
+
 cross-gcc-defaults (0.3) unstable; urgency=high
 
   * Correct Uploader's email address
   * Fix remaining lintian issue 
 
- -- wookey <wookey@wookware.org>  Thu, 23 Oct 2014 22:52:21 +0100
+ -- Wookey <wookey@debian.org>  Thu, 23 Oct 2014 22:52:21 +0100
 
 cross-gcc-defaults (0.2) unstable; urgency=high
 
