@@ -9,37 +9,32 @@ use IPC::Run 'run';
 
 
 my $description_cpp = <<'EOF';
-GNU C preprocessor (cpp)
- The GNU C preprocessor is a macro processor that is used automatically
- by the GNU C compiler to transform programs before actual compilation.
- .
- This package has been separated from gcc for the benefit of those who
- require the preprocessor but not the compiler.
- .
- This is a dependency package providing the default GNU C preprocessor.
+GNU C cross-preprocessor (cpp)
+ This is the GNU C preprocessor cpp built for cross-building DEB_TARGET_ARCH
+ binaries/packages. This is actually a metapackage that will bring in the
+ correct versioned cpp cross package and symlink to it.
 EOF
 
 my $description_gcc = <<'EOF';
-GNU C compiler
- This is the GNU C compiler, a fairly portable optimizing compiler for C.
- .
- This is a dependency package providing the default GNU C compiler.
+GNU C cross-compiler
+ This is the GNU C compiler built for cross-building DEB_TARGET_ARCH
+ binaries/packages. This is actually a metapackage that will bring in the
+ correct versioned gcc cross package and symlink to it.
 EOF
 
 my $description_gpp = <<'EOF';
-GNU C++ compiler
- This is the GNU C++ compiler, a fairly portable optimizing compiler for C++.
- .
- This is a dependency package providing the default GNU C++ compiler.
+GNU C++ cross-compiler
+ This is the GNU C++ compiler built for cross-building DEB_TARGET_ARCH
+ binaries/packages. This is actually a metapackage that will bring in the
+ correct versioned gcc cross package and symlink to it.
 EOF
 
 my $description_gfortran = <<'EOF';
-GNU Fortran 95 compiler
- This is the GNU Fortran 95 compiler, which compiles Fortran 95 on platforms
- supported by the gcc compiler. It uses the gcc backend to generate optimized
- code.
- .
- This is a dependency package providing the default GNU Fortran 95 compiler.
+GNU Fortran 95 cross-compiler
+ This is the GNU Fortran 95 compiler built for cross-building DEB_TARGET_ARCH
+ binaries/packages. This is actually a metapackage that will bring in
+ the correct versioned gcc cross package and symlink to it.
+
 EOF
 
 my %base_descriptions = ( 'cpp'      => $description_cpp,
