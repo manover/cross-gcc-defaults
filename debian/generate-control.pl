@@ -34,13 +34,28 @@ GNU Fortran 95 cross-compiler
  This is the GNU Fortran 95 compiler built for cross-building DEB_TARGET_ARCH
  binaries/packages. This is actually a metapackage that will bring in
  the correct versioned gcc cross package and symlink to it.
+EOF
 
+my $description_gobjc = <<'EOF';
+GNU objective C cross-compiler
+ This is the GNU objective C compiler built for cross-building DEB_TARGET_ARCH
+ binaries/packages. This is actually a metapackage that will bring in the
+ correct versioned gcc cross package and symlink to it.
+EOF
+
+my $description_gccgo = <<'EOF';
+GNU go cross-compiler
+ This is the GNU go compiler built for cross-building DEB_TARGET_ARCH
+ binaries/packages. This is actually a metapackage that will bring in the
+ correct versioned gcc cross package and symlink to it.
 EOF
 
 my %base_descriptions = ( 'cpp'      => $description_cpp,
                           'gcc'      => $description_gcc,
                           'g++'      => $description_gpp,
-                          'gfortran' => $description_gfortran);
+                          'gfortran' => $description_gfortran,
+                          'gobjc'    => $description_gobjc,
+                          'gccgo'    => $description_gccgo );
 
 
 
