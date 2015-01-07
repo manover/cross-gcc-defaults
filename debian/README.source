@@ -5,6 +5,15 @@ When generating the control file, it is necessary to specify the architectures
 we're interested in. For instance, one could do this:
 
  TARGET_LIST='armel armhf' debian/generate-control.pl 
+ 
+The default in debian is (currently)
+ TARGET_LIST='armel armhf arm64 mips mipsel powerpc ppc64el' debian/generate-control.pl
+
+Note that this requires libipc-run-perl to be installed. This is not a
+build-dependency of the generated source package, but is needed to
+generate that package from git.
 
 To adjust the major version of gcc, or the list of packages that we generate,
 tweak the variables at the top of debian/rules
+
+
