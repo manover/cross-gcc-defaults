@@ -1,6 +1,9 @@
-cpp 4.9
-gcc 4.9
-g++ 4.9
-gfortran 4.9
-gobjc 4.9
-gccgo 4.9
+cpp cpp 4.9
+gcc gcc 4.9
+gcc gcc-ar 4.9
+gcc gcc-ranlib 4.9
+gcc gcc-nm 4.9
+g++ g++ 4.9
+gfortran gfortran 4.9
+gobjc gobjc 4.9
+gccgo gccgo 4.9

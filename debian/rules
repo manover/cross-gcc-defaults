@@ -3,11 +3,11 @@
 
 # Adjust these when we want to control which packages we release
 RELEASE := 4.9
-PROGS   := cpp gcc g++ gfortran gobjc gccgo
+PKGS   := cpp gcc g++ gfortran gobjc gccgo
 
 # this is there so that generate-control.pl can ask about it
 say_progs_release:
-	@echo $(PROGS) $(RELEASE)
+	@echo $(PKGS) $(RELEASE)
 .PHONY: say_progs_release
 
 
@@ -38,8 +38,8 @@ ARCHES_GNU_TYPE = \
 
 override_dh_auto_install:
 	for arch in $(ARCHES_GNU_TYPE); do							\
-	    while read prog ver; do								\
-	        dh_link -p$$prog-$$arch usr/bin/$$arch-$$prog-$$ver usr/bin/$$arch-$$prog;	\
+	    while read pkg prog ver; do								\
+	        dh_link -p$$pkg-$$arch usr/bin/$$arch-$$prog-$$ver usr/bin/$$arch-$$prog;	\
             done < debian/defaults;								\
 	done
 

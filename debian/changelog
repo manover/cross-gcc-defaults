@@ -1,3 +1,9 @@
+cross-gcc-defaults (0.5) unstable; urgency=medium
+
+  * Add a gcc-{ar,nm,ranlib} symlinks to the gcc-* packages. (Closes: #774739)
+
+ -- Wookey <wookey@debian.org>  Wed, 07 Jan 2015 09:21:28 +0000
+
 cross-gcc-defaults (0.4) unstable; urgency=low
 
   * Added gobjc and gccgo to the default set of cross-toolchains built
