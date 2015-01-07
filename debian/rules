@@ -48,7 +48,7 @@ override_dh_clean:
 	rm -f debian/*.lintian-overrides
 
 
-# each package program-arch is Depends: program-arch-release (>=version)
+# each package package-arch is Depends: package-arch-release (>=version)
 # where 'version' is the current version of gcc-release-base
 #
 # asking for the first line only because I can have multiple arches installed at
