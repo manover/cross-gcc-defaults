@@ -1,0 +1,8 @@
+#! /bin/sh
+
+set -e
+
+update-alternatives --quiet --install /usr/bin/$DEB_TARGET_GNU_TYPE-f77 $DEB_TARGET_GNU_TYPE-f77 /usr/bin/$DEB_TARGET_GNU_TYPE-gfortran 10
+update-alternatives --quiet --install /usr/bin/$DEB_TARGET_GNU_TYPE-f95 $DEB_TARGET_GNU_TYPE-f95 /usr/bin/$DEB_TARGET_GNU_TYPE-gfortran 10
+
+#DEBHELPER#

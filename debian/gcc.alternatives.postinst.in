@@ -1,0 +1,9 @@
+#! /bin/sh
+
+set -e
+
+update-alternatives --quiet --install /usr/bin/$DEB_TARGET_GNU_TYPE-cc  $DEB_TARGET_GNU_TYPE-cc  /usr/bin/$DEB_TARGET_GNU_TYPE-gcc 10
+update-alternatives --quiet --install /usr/bin/$DEB_TARGET_GNU_TYPE-c89 $DEB_TARGET_GNU_TYPE-c89 /usr/bin/$DEB_TARGET_GNU_TYPE-gcc 10
+update-alternatives --quiet --install /usr/bin/$DEB_TARGET_GNU_TYPE-c99 $DEB_TARGET_GNU_TYPE-c99 /usr/bin/$DEB_TARGET_GNU_TYPE-gcc 10
+
+#DEBHELPER#

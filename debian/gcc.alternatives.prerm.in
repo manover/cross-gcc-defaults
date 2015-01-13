@@ -1,0 +1,11 @@
+#! /bin/sh
+
+set -e
+
+if [ "$1" != upgrade ]; then
+    update-alternatives --quiet --remove $DEB_TARGET_GNU_TYPE-cc  /usr/bin/$DEB_TARGET_GNU_TYPE-gcc
+    update-alternatives --quiet --remove $DEB_TARGET_GNU_TYPE-c89 /usr/bin/$DEB_TARGET_GNU_TYPE-gcc
+    update-alternatives --quiet --remove $DEB_TARGET_GNU_TYPE-c99 /usr/bin/$DEB_TARGET_GNU_TYPE-gcc
+fi
+
+#DEBHELPER#

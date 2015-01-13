@@ -1,0 +1,9 @@
+#! /bin/sh
+
+set -e
+
+if [ "$1" != upgrade ]; then
+    update-alternatives --quiet --remove $DEB_TARGET_GNU_TYPE-c++ /usr/bin/$DEB_TARGET_GNU_TYPE-g++
+fi
+
+#DEBHELPER#
