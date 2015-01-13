@@ -106,6 +106,8 @@ for my $DEB_TARGET_ARCH (@target_list)
             print $fd_control_out $_;
         }
     }
+
+    generate_alternatives($DEB_TARGET_GNU_TYPE);
 }
 
 
@@ -147,4 +149,27 @@ sub runchild
     }
 
     return $out;
+}
+
+sub generate_alternatives
+{
+    my ($DEB_TARGET_GNU_TYPE) = @_;
+
+    for my $prog (qw(gcc g++ gfortran))
+    {
+        for my $inputfile (map {"$Bin/$prog.alternatives.$_.in"} qw(prerm postinst))
+        {
+            my $outputfile = $inputfile;
+            $outputfile =~ s/(.*)\.alternatives(.*)\.in/$1-$DEB_TARGET_GNU_TYPE$2/;
+
+            open my $fd_in,  '<', $inputfile;
+            open my $fd_out, '>', $outputfile;
+
+            while (<$fd_in>)
+            {
+                s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/g;
+                print $fd_out $_;
+            }
+        }
+    }
 }
