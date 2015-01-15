@@ -59,5 +59,7 @@ GCC_BASE_VERSION := \
 override_dh_gencontrol:
 	dh_gencontrol -- -v$(GCC_BASE_VERSION) -Vver=$(GCC_BASE_VERSION)
 
-debian/control:
+control:
 	debian/generate-pkgfiles.pl
+
+.PHONY: control
