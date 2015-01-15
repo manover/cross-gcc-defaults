@@ -69,7 +69,7 @@ my @target_list = split / /, $target_list_str or
 
 say "Generating debian/control for arches '@target_list'";
 
-my @progs   = split(/ /, runchild(qw(make -f), "$Bin/rules", 'say_progs_release'));
+my @progs   = split(/ /, runchild(qw(make --quiet -f), "$Bin/rules", 'say_progs_release'));
 my $release = pop @progs;
 
 open my $fd_control_out, '>', "$Bin/control";
