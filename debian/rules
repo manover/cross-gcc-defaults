@@ -53,8 +53,8 @@ override_dh_clean:
 #
 # asking for the first line only because I can have multiple arches installed at
 # the same time, and I only want a single version.
-GCC_BASE_VERSION = \
+GCC_BASE_VERSION := \
  $(or $(shell dpkg-query -f '$${Version}\n' -W gcc-$(RELEASE)-base | head -n1), \
    $(error gcc-$(RELEASE)-base must be installed))
 override_dh_gencontrol:
-	ver=$(GCC_BASE_VERSION); dh_gencontrol -- -v$$ver -Vver=$$ver
+	dh_gencontrol -- -v$(GCC_BASE_VERSION) -Vver=$(GCC_BASE_VERSION)
