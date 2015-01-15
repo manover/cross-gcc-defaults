@@ -1,3 +1,10 @@
+cross-gcc-defaults (0.6) unstable; urgency=medium
+
+  * Add alternatives entries for crosstools (Closes: #774739) 
+  * Remove spurious unsafe symlink
+
+ -- Wookey <wookey@debian.org>  Thu, 15 Jan 2015 03:23:02 +0000
+
 cross-gcc-defaults (0.5) unstable; urgency=medium
 
   * Add a gcc-{ar,nm,ranlib} symlinks to the gcc-* packages. (Closes: #774739)
