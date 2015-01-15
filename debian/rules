@@ -58,3 +58,6 @@ GCC_BASE_VERSION := \
    $(error gcc-$(RELEASE)-base must be installed))
 override_dh_gencontrol:
 	dh_gencontrol -- -v$(GCC_BASE_VERSION) -Vver=$(GCC_BASE_VERSION)
+
+debian/control:
+	debian/generate-pkgfiles.pl
