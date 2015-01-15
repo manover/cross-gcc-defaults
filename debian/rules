@@ -5,7 +5,7 @@
 RELEASE := 4.9
 PKGS   := cpp gcc g++ gfortran gobjc gccgo
 
-# this is there so that generate-control.pl can ask about it
+# this is there so that generate-pkgfiles.pl can ask about it
 say_progs_release:
 	@echo $(PKGS) $(RELEASE)
 .PHONY: say_progs_release
