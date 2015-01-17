@@ -3,16 +3,17 @@
 
 # Adjust these when we want to control which packages we release
 RELEASE := 4.9
-PKGS   := cpp gcc g++ gfortran gobjc gccgo
+PKGS    := cpp gcc g++ gfortran gobjc gccgo
 
 # this is there so that generate-pkgfiles.pl can ask about it
 say_progs_release:
 	@echo $(PKGS) $(RELEASE)
 .PHONY: say_progs_release
 
-
-
-
+# version suffix used when we need further uploads without a new gcc
+# upload. Normally not set. Used as: SUFFIX=.1 dpkg-buildpackage
+# Or can be set here (remember to comment it out again for next upload)
+# SUFFIX ?= .1
 
 
 #export DH_VERBOSE=1
@@ -49,15 +50,16 @@ override_dh_clean:
 
 
 # each package package-arch is Depends: package-arch-release (>=version)
-# where 'version' is the current version of gcc-release-base
+# where 'version' is the current version of gcc-release-base (+suffix
+# if needed to distinguish)
 #
 # asking for the first line only because I can have multiple arches installed at
 # the same time, and I only want a single version.
-GCC_BASE_VERSION := \
+GCC_BINARY_VERSION := \
  $(or $(shell dpkg-query -f '$${Version}\n' -W gcc-$(RELEASE)-base | head -n1), \
    $(error gcc-$(RELEASE)-base must be installed))
 override_dh_gencontrol:
-	dh_gencontrol -- -v$(GCC_BASE_VERSION) -Vver=$(GCC_BASE_VERSION)
+	dh_gencontrol -- -v$(GCC_BINARY_VERSION)$(SUFFIX) -Vver=$(GCC_BINARY_VERSION)
 
 control:
 	debian/generate-pkgfiles.pl

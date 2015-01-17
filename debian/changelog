@@ -1,6 +1,12 @@
+cross-gcc-defaults (0.7) unstable; urgency=medium
+
+  * Add suffix version-numbering option for repeat uploads without a new gcc upload
+
+ -- Wookey <wookey@debian.org>  Sat, 17 Jan 2015 02:44:02 +0000
+
 cross-gcc-defaults (0.6) unstable; urgency=medium
 
-  * Add alternatives entries for crosstools (Closes: #774739) 
+  * Add alternatives entries for crosstools (Closes: #775155) 
   * Remove spurious unsafe symlink
 
  -- Wookey <wookey@debian.org>  Thu, 15 Jan 2015 03:23:02 +0000
