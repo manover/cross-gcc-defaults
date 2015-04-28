@@ -63,9 +63,9 @@ my %base_descriptions = ( 'cpp'      => $description_cpp,
 
 
 
-my $target_list_str = $ENV{TARGET_LIST} || `cat $Bin/targetlist` || ' ';
+my $target_list_str = $ENV{TARGET_LIST} || ' ';
 my @target_list = split / /, $target_list_str or
-  die "Couldn't get target list from the TARGET_LIST env var, or from the file '$Bin/targetlist'";
+  die "Couldn't get target list from the TARGET_LIST env var";
 
 say "Generating debian/control for arches '@target_list'";
 
