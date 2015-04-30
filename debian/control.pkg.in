@@ -1,5 +1,5 @@
 Package: $pkg-$DEB_TARGET_GNU_TYPE
 Architecture: all
 Multi-arch: foreign
-Depends: $pkg-$ver-$DEB_TARGET_GNU_TYPE (>=${ver}), ${misc:Depends}
+Depends: $pkg-$ver-$DEB_TARGET_GNU_TYPE, ${misc:Depends}
 Description: $description

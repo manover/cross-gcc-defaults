@@ -21,10 +21,17 @@ say_pkgs_release:
 	@echo $(PKGS) $(RELEASE)
 .PHONY: say_pkgs_release
 
-# version suffix used when we need further uploads without a new gcc
-# upload. Normally not set. Used as: SUFFIX=.1 dpkg-buildpackage
-# Or can be set here (remember to comment it out again for next upload)
-# SUFFIX ?= .1
+
+# To build a second cross-gcc-defaults upload for the same major gcc release (4.9,
+# 5, etc), we increment the SUFFIX env var (or set it in rules, but then remember
+# to reset it for next time), thus:
+#
+#   SUFFIX=2 dpkg-buildpackage
+#
+# This will add -2 to the version number of the binary metapackages so they don't
+# clash with the previous upload(s). If unset we assume this is the first upload
+# for a given gcc release, so SUFFIX=1
+SUFFIX ?= 1
 
 
 #export DH_VERBOSE=1
@@ -59,17 +66,8 @@ override_dh_clean:
 	rm -f debian/*.lintian-overrides
 
 
-# each package package-arch is Depends: package-arch-release (>=version)
-# where 'version' is the current version of gcc-release-base (+suffix
-# if needed to distinguish)
-#
-# asking for the first line only because I can have multiple arches installed at
-# the same time, and I only want a single version.
-GCC_BINARY_VERSION := \
- $(or $(shell dpkg-query -f '$${Version}\n' -W gcc-$(RELEASE)-base | head -n1), \
-   $(error gcc-$(RELEASE)-base must be installed))
 override_dh_gencontrol:
-	dh_gencontrol -- -v$(GCC_BINARY_VERSION)$(SUFFIX) -Vver=$(GCC_BINARY_VERSION)
+	dh_gencontrol -- -v$(RELEASE)-$(SUFFIX) -Vver=$(RELEASE)
 
 control:
 	debian/generate-pkgfiles.pl

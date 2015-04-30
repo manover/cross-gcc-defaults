@@ -16,9 +16,12 @@ generate that package from git.
 To adjust the major version of gcc, or the list of packages that we generate,
 tweak the variables at the top of debian/rules
 
-To build a second cross-gcc-defaults upload when no new gcc has been
-uploaded since the last one use the SUFFIX env var (or set it in
-rules, but then remember to unset it for next time), thus:
-SUFFIX=.1 dpkg-buildpackage
-This will add .1 to the version number of the binary metapackages so
-they don't clash with the previous upload(s)
+To build a second cross-gcc-defaults upload for the same major gcc release (4.9,
+5, etc), we increment the SUFFIX env var (or set it in rules, but then remember
+to reset it for next time), thus:
+
+  SUFFIX=2 dpkg-buildpackage
+
+This will add -2 to the version number of the binary metapackages so they don't
+clash with the previous upload(s). If unset we assume this is the first upload
+for a given gcc release, so SUFFIX=1
