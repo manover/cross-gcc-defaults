@@ -69,8 +69,8 @@ my @target_list = split / /, $target_list_str or
 
 say "Generating debian/control for arches '@target_list'";
 
-my @progs   = split(/ /, runchild(qw(make --quiet -f), "$Bin/rules", 'say_progs_release'));
-my $release = pop @progs;
+my @pkgs    = split(/ /, runchild(qw(make --quiet -f), "$Bin/rules", 'say_pkgs_release'));
+my $release = pop @pkgs;
 
 open my $fd_control_out, '>', "$Bin/control";
 
@@ -89,16 +89,16 @@ for my $DEB_TARGET_ARCH (@target_list)
 
     say $fd_control_out "";
 
-    for my $prog (@progs)
+    for my $pkg (@pkgs)
     {
-        my $description = description($prog, $DEB_TARGET_ARCH);
+        my $description = description($pkg, $DEB_TARGET_ARCH);
 
         open my $fd_control_in, '<', "$Bin/control.pkg.in";
         while(<$fd_control_in>)
         {
             s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/;
 	    s/\$DEB_TARGET_ARCH/$DEB_TARGET_ARCH/;
-	    s/\$prog/$prog/;
+	    s/\$pkg/$pkg/;
 	    s/\$ver/$release/;
 	    s/\$description/$description/;
 
@@ -115,18 +115,18 @@ for my $DEB_TARGET_ARCH (@target_list)
 
 sub description
 {
-    my $prog = shift;
+    my $pkg  = shift;
     my $arch = shift;
 
     my $base;
-    if( $base_descriptions{$prog} )
+    if( $base_descriptions{$pkg} )
     {
-        $base = $base_descriptions{$prog};
+        $base = $base_descriptions{$pkg};
     }
     else
     {
-        $base_descriptions{$prog} = $base =
-          runchild(qw(dpkg-query -f), '${Description}', '-W', $prog);
+        $base_descriptions{$pkg} = $base =
+          runchild(qw(dpkg-query -f), '${Description}', '-W', $pkg);
     }
 
     my $description = $base;

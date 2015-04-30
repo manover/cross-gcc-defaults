@@ -6,9 +6,9 @@ RELEASE := 4.9
 PKGS    := cpp gcc g++ gfortran gobjc gccgo
 
 # this is there so that generate-pkgfiles.pl can ask about it
-say_progs_release:
+say_pkgs_release:
 	@echo $(PKGS) $(RELEASE)
-.PHONY: say_progs_release
+.PHONY: say_pkgs_release
 
 # version suffix used when we need further uploads without a new gcc
 # upload. Normally not set. Used as: SUFFIX=.1 dpkg-buildpackage
