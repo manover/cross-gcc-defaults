@@ -1,9 +1,20 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-# Adjust these when we want to control which packages we release
+# Adjust these when we want to control which packages we release and the links they contain
 RELEASE := 4.9
 PKGS    := cpp gcc g++ gfortran gobjc gccgo
+
+PROGS_IN_cpp       := cpp
+PROGS_IN_gcc       := gcc gcc-ar gcc-ranlib gcc-nm
+PROGS_IN_g++       := g++
+PROGS_IN_gfortran  := gfortran
+PROGS_IN_gobjc     := gobjc
+PROGS_IN_gccgo     := gccgo
+
+
+
+
 
 # this is there so that generate-pkgfiles.pl can ask about it
 say_pkgs_release:
@@ -32,17 +43,16 @@ override_dh_installchangelogs:
 
 
 # I get the arches based on what's in my debian/control file
-ARCHES_GNU_TYPE = \
+ARCHES_GNU_TYPE := \
   $(shell perl -ne \
     'if(/Package: *[a-z0-9+_-]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
     < debian/control | uniq)
 
 override_dh_auto_install:
-	for arch in $(ARCHES_GNU_TYPE); do							\
-	    while read pkg prog ver; do								\
-	        dh_link -p$$pkg-$$arch usr/bin/$$arch-$$prog-$$ver usr/bin/$$arch-$$prog;	\
-            done < debian/defaults;								\
-	done
+	$(foreach arch,$(ARCHES_GNU_TYPE),\
+	    $(foreach pkg,$(PKGS),\
+	        $(foreach prog,$(PROGS_IN_$(pkg)),\
+	            dh_link -p$(pkg)-$(arch) usr/bin/$(arch)-$(prog)-$(RELEASE) usr/bin/$(arch)-$(prog);)))
 
 override_dh_clean:
 	dh_clean
