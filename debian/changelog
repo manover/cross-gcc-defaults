@@ -1,9 +1,9 @@
 cross-gcc-defaults (0.8) unstable; urgency=medium
 
-  * removed undocumented targetlist method of specifying the targetlist
   * consolidated all user settings in debian/rules
   * generated packages no longer have a versioned depends
   * building gcc-defaults for gcc 5
+  * DEB_TARGET_ARCH is now correctly substitued in the control file
 
  -- Dima Kogan <dima@secretsauce.net>  Thu, 30 Apr 2015 16:20:36 -0700
 
