@@ -26,12 +26,12 @@ say_pkgs_release:
 # 5, etc), we increment the SUFFIX env var (or set it in rules, but then remember
 # to reset it for next time), thus:
 #
-#   SUFFIX=2 dpkg-buildpackage
+#   SUFFIX=.1 dpkg-buildpackage
 #
-# This will add -2 to the version number of the binary metapackages so they don't
+# This will add .1 to the version number of the binary metapackages so they don't
 # clash with the previous upload(s). If unset we assume this is the first upload
-# for a given gcc release, so SUFFIX=1
-SUFFIX ?= 1
+# for a given gcc release, so no SUFFIX is used
+SUFFIX ?= 
 
 
 #export DH_VERBOSE=1
@@ -67,7 +67,7 @@ override_dh_clean:
 
 
 override_dh_gencontrol:
-	dh_gencontrol -- -v$(RELEASE)-$(SUFFIX) -Vver=$(RELEASE)
+	dh_gencontrol -- -v$(RELEASE)$(SUFFIX) -Vver=$(RELEASE)
 
 control:
 	debian/generate-pkgfiles.pl
