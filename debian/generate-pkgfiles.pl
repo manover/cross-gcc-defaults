@@ -10,42 +10,42 @@ use IPC::Run 'run';
 
 my $description_cpp = <<'EOF';
 GNU C cross-preprocessor (cpp)
- This is the GNU C preprocessor cpp built for cross-building DEB_TARGET_ARCH
+ This is the GNU C preprocessor cpp built for cross-building $DEB_TARGET_ARCH
  binaries/packages. This is actually a metapackage that will bring in the
  correct versioned cpp cross package and symlink to it.
 EOF
 
 my $description_gcc = <<'EOF';
 GNU C cross-compiler
- This is the GNU C compiler built for cross-building DEB_TARGET_ARCH
+ This is the GNU C compiler built for cross-building $DEB_TARGET_ARCH
  binaries/packages. This is actually a metapackage that will bring in the
  correct versioned gcc cross package and symlink to it.
 EOF
 
 my $description_gpp = <<'EOF';
 GNU C++ cross-compiler
- This is the GNU C++ compiler built for cross-building DEB_TARGET_ARCH
+ This is the GNU C++ compiler built for cross-building $DEB_TARGET_ARCH
  binaries/packages. This is actually a metapackage that will bring in the
  correct versioned gcc cross package and symlink to it.
 EOF
 
 my $description_gfortran = <<'EOF';
 GNU Fortran 95 cross-compiler
- This is the GNU Fortran 95 compiler built for cross-building DEB_TARGET_ARCH
+ This is the GNU Fortran 95 compiler built for cross-building $DEB_TARGET_ARCH
  binaries/packages. This is actually a metapackage that will bring in
  the correct versioned gcc cross package and symlink to it.
 EOF
 
 my $description_gobjc = <<'EOF';
 GNU objective C cross-compiler
- This is the GNU objective C compiler built for cross-building DEB_TARGET_ARCH
+ This is the GNU objective C compiler built for cross-building $DEB_TARGET_ARCH
  binaries/packages. This is actually a metapackage that will bring in the
  correct versioned gcc cross package and symlink to it.
 EOF
 
 my $description_gccgo = <<'EOF';
 GNU go cross-compiler
- This is the GNU go compiler built for cross-building DEB_TARGET_ARCH
+ This is the GNU go compiler built for cross-building $DEB_TARGET_ARCH
  binaries/packages. This is actually a metapackage that will bring in the
  correct versioned gcc cross package and symlink to it.
 EOF
@@ -91,18 +91,30 @@ for my $DEB_TARGET_ARCH (@target_list)
 
     for my $pkg (@pkgs)
     {
-        my $description = description($pkg, $DEB_TARGET_ARCH);
+        my $description;
+
+
+        my $subst_into_control = sub
+        {
+            foreach(@_)
+            {
+                s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/;
+                s/\$DEB_TARGET_ARCH/$DEB_TARGET_ARCH/;
+                s/\$pkg/$pkg/;
+                s/\$ver/$release/;
+                s/\$description/$description/;
+            }
+        };
+
+
+
+        $description = description($pkg, $DEB_TARGET_ARCH);
+        $subst_into_control->($description);
 
         open my $fd_control_in, '<', "$Bin/control.pkg.in";
         while(<$fd_control_in>)
         {
-            s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/;
-	    s/\$DEB_TARGET_ARCH/$DEB_TARGET_ARCH/;
-	    s/\$pkg/$pkg/;
-	    s/\$ver/$release/;
-	    s/\$description/$description/;
-
-
+            $subst_into_control->($_);
             print $fd_control_out $_;
         }
     }
