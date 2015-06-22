@@ -86,6 +86,7 @@ for my $DEB_TARGET_ARCH (@target_list)
 {
     my $DEB_TARGET_GNU_TYPE =
       runchild(qw(dpkg-architecture -qDEB_HOST_GNU_TYPE -f), "-a$DEB_TARGET_ARCH");
+    $DEB_TARGET_GNU_TYPE =~ s/_/-/g;
 
     say $fd_control_out "";
 

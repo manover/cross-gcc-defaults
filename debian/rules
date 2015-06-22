@@ -52,14 +52,14 @@ override_dh_installchangelogs:
 # I get the arches based on what's in my debian/control file
 ARCHES_GNU_TYPE := \
   $(shell perl -ne \
-    'if(/Package: *[a-z0-9+_-]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
-    < debian/control | uniq)
+    'if(/Package: *[a-z0-9+_]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
+    < debian/control | uniq | sed 's/x86-64-linux-gnu/x86_64-linux-gnu/g')
 
 override_dh_auto_install:
 	$(foreach arch,$(ARCHES_GNU_TYPE),\
 	    $(foreach pkg,$(PKGS),\
 	        $(foreach prog,$(PROGS_IN_$(pkg)),\
-	            dh_link -p$(pkg)-$(arch) usr/bin/$(arch)-$(prog)-$(RELEASE) usr/bin/$(arch)-$(prog);)))
+	            dh_link -p$(pkg)-$$(echo $(arch)|sed 's/_/-/g') usr/bin/$(arch)-$(prog)-$(RELEASE) usr/bin/$(arch)-$(prog);)))
 
 override_dh_clean:
 	dh_clean
