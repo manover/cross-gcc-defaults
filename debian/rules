@@ -2,7 +2,7 @@
 # -*- makefile -*-
 
 # Adjust these when we want to control which packages we release
-RELEASE := 4.9
+RELEASE := 5
 PKGS    := cpp gcc g++ gfortran gobjc gccgo
 
 # this is there so that generate-pkgfiles.pl can ask about it
