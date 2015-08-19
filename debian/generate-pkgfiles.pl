@@ -86,7 +86,7 @@ for my $DEB_TARGET_ARCH (@target_list)
 {
     my $DEB_TARGET_GNU_TYPE =
       runchild(qw(dpkg-architecture -qDEB_HOST_GNU_TYPE -f), "-a$DEB_TARGET_ARCH");
-    $DEB_TARGET_GNU_TYPE =~ s/_/-/g;
+    my $DEB_TARGET_GNU_TYPE_ESC = $DEB_TARGET_GNU_TYPE =~ s/_/-/gr;
 
     say $fd_control_out "";
 
@@ -99,7 +99,7 @@ for my $DEB_TARGET_ARCH (@target_list)
         {
             foreach(@_)
             {
-                s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE/;
+                s/\$DEB_TARGET_GNU_TYPE/$DEB_TARGET_GNU_TYPE_ESC/;
                 s/\$DEB_TARGET_ARCH/$DEB_TARGET_ARCH/;
                 s/\$pkg/$pkg/;
                 s/\$ver/$release/;
@@ -120,7 +120,7 @@ for my $DEB_TARGET_ARCH (@target_list)
         }
     }
 
-    generate_alternatives($DEB_TARGET_GNU_TYPE);
+    generate_alternatives($DEB_TARGET_GNU_TYPE, $DEB_TARGET_GNU_TYPE_ESC);
 }
 
 
@@ -166,14 +166,14 @@ sub runchild
 
 sub generate_alternatives
 {
-    my ($DEB_TARGET_GNU_TYPE) = @_;
+    my ($DEB_TARGET_GNU_TYPE,$DEB_TARGET_GNU_TYPE_ESC) = @_;
 
     for my $prog (qw(gcc g++ gfortran))
     {
         for my $inputfile (map {"$Bin/$prog.alternatives.$_.in"} qw(prerm postinst))
         {
             my $outputfile = $inputfile;
-            $outputfile =~ s/(.*)\.alternatives(.*)\.in/$1-$DEB_TARGET_GNU_TYPE$2/;
+            $outputfile =~ s/(.*)\.alternatives(.*)\.in/$1-$DEB_TARGET_GNU_TYPE_ESC$2/;
 
             open my $fd_in,  '<', $inputfile;
             open my $fd_out, '>', $outputfile;
