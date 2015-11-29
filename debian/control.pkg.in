@@ -1,5 +1,0 @@
-Package: $prog-$DEB_TARGET_GNU_TYPE
-Architecture: all
-Multi-arch: foreign
-Depends: $prog-$ver-$DEB_TARGET_GNU_TYPE (>=${ver}), ${misc:Depends}
-Description: $description

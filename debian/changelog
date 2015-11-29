@@ -1,8 +1,25 @@
+cross-gcc-defaults (0.8.2) unstable; urgency=medium
+
+  * control generator script re-written, allowing more
+    flexiblity
+  * rules file adjusted to accomodate the new generator
+
+ -- Denis Bychkov <manover@gmail.com>  Sat, 28 Nov 2015 20:04:26 -0500
+
+cross-gcc-defaults (0.8.1) unstable; urgency=medium
+
+  * Minor updates (gfortran included)
+
+ -- Denis Bychkov <manover@gmail.com>  Fri, 27 Nov 2015 18:53:26 -0500
+
 cross-gcc-defaults (0.8) unstable; urgency=medium
 
-  * bumped up the links to use version 5 of the compilers instead of 4.9
+  * consolidated all user settings in debian/rules
+  * generated packages no longer have a versioned depends
+  * building gcc-defaults for gcc 5
+  * DEB_TARGET_ARCH is now correctly substitued in the control file
 
- -- Dima Kogan <dima@secretsauce.net>  Mon, 03 Aug 2015 00:10:03 -0700
+ -- Dima Kogan <dima@secretsauce.net>  Thu, 30 Apr 2015 16:20:36 -0700
 
 cross-gcc-defaults (0.7) unstable; urgency=medium
 

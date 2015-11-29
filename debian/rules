@@ -1,22 +1,35 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-# Adjust these when we want to control which packages we release
-RELEASE := 5
-PKGS    := cpp gcc g++ gfortran gobjc gccgo
+# Adjust these when we want to control which packages we release and the links they contain
+MAJOR	:= 5
+RELEASE := 5.2
+PKGS    := cpp gcc g++ gfortran #gobjc gccgo
 
-# this is there so that generate-pkgfiles.pl can ask about it
-say_progs_release:
-	@echo $(PKGS) $(RELEASE)
-.PHONY: say_progs_release
+PROGS_IN_cpp       := cpp
+PROGS_IN_gcc       := gcc gcc-ar gcc-ranlib gcc-nm
+PROGS_IN_g++       := g++
+PROGS_IN_gfortran  := gfortran
+PROGS_IN_gobjc     := gobjc
+PROGS_IN_gccgo     := gccgo
 
-# version suffix used when we need further uploads without a new gcc
-# upload. Normally not set. Used as: SUFFIX=.1 dpkg-buildpackage
-# Or can be set here (remember to comment it out again for next upload)
-# SUFFIX ?= .1
+export DH_VERBOSE=1
+
+# To build a second cross-gcc-defaults upload for the same major gcc release (4.9,
+# 5, etc), we increment the SUFFIX env var (or set it in rules, but then remember
+# to reset it for next time), thus:
+#
+#   SUFFIX=.1 dpkg-buildpackage
+#
+# This will add .1 to the version number of the binary metapackages so they don't
+# clash with the previous upload(s). If unset we assume this is the first upload
+# for a given gcc release, so no SUFFIX is used
+SUFFIX ?=
 
 
-#export DH_VERBOSE=1
+debian/control: debian/rules debian/control.head.in debian/control.pkg.in
+	PACKAGE_LIST="$(PKGS)" VER="$(RELEASE)" debian/generate-pkgfiles.py > debian/control
+
 %:
 	dh $@
 
@@ -32,36 +45,23 @@ override_dh_installchangelogs:
 
 
 # I get the arches based on what's in my debian/control file
-ARCHES_GNU_TYPE = \
+ARCHES_GNU_TYPE := \
   $(shell perl -ne \
-    'if(/Package: *[a-z0-9+_-]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
-    < debian/control | uniq)
+    'if(/Package: *[a-z0-9+_]+-([a-z0-9+_-]+-[a-z0-9+_-]+-[a-z0-9+_-]+)/) {print "$$1\n";}' \
+    < debian/control | uniq | sed 's/x86-64-linux-gnu/x86_64-linux-gnu/g')
 
 override_dh_auto_install:
-	for arch in $(ARCHES_GNU_TYPE); do							\
-	    while read pkg prog ver; do								\
-	        dh_link -p$$pkg-$$arch usr/bin/$$arch-$$prog-$$ver usr/bin/$$arch-$$prog;	\
-            done < debian/defaults;								\
-	done
+	$(foreach arch,$(ARCHES_GNU_TYPE),\
+	    $(foreach pkg,$(PKGS),\
+	        $(foreach prog,$(PROGS_IN_$(pkg)),\
+	            dh_link -p$(pkg)-$$(echo $(arch)|sed 's/_/-/g') usr/bin/$(arch)-$(prog)-$(MAJOR) usr/bin/$(arch)-$(prog);)))
 
 override_dh_clean:
 	dh_clean
 	rm -f debian/*.lintian-overrides
 
 
-# each package package-arch is Depends: package-arch-release (>=version)
-# where 'version' is the current version of gcc-release-base (+suffix
-# if needed to distinguish)
-#
-# asking for the first line only because I can have multiple arches installed at
-# the same time, and I only want a single version.
-GCC_BINARY_VERSION := \
- $(or $(shell dpkg-query -f '$${Version}\n' -W gcc-$(RELEASE)-base | head -n1), \
-   $(error gcc-$(RELEASE)-base must be installed))
 override_dh_gencontrol:
-	dh_gencontrol -- -v$(GCC_BINARY_VERSION)$(SUFFIX) -Vver=$(GCC_BINARY_VERSION)
-
-control:
-	debian/generate-pkgfiles.pl
+	dh_gencontrol -- -v$(RELEASE)$(SUFFIX) -Vver=$(RELEASE)
 
 .PHONY: control
