@@ -3,7 +3,7 @@
 
 # Adjust these when we want to control which packages we release and the links they contain
 MAJOR	:= 5
-RELEASE := 5.2
+RELEASE := 5.3
 PKGS    := cpp gcc g++ gfortran #gobjc gccgo
 
 PROGS_IN_cpp       := cpp
@@ -27,7 +27,7 @@ export DH_VERBOSE=1
 SUFFIX ?=
 
 
-debian/control: debian/rules debian/control.head.in debian/control.pkg.in
+debian/control: debian/rules debian/control.head.in debian/control.pkg.in debian/generate-pkgfiles.py
 	PACKAGE_LIST="$(PKGS)" VER="$(RELEASE)" debian/generate-pkgfiles.py > debian/control
 
 %:

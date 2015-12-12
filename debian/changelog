@@ -1,8 +1,12 @@
+cross-gcc-defaults (0.8.3) unstable; urgency=medium
+
+  * GCC 5.3.x
+
+ -- Denis Bychkov <manover@gmail.com>  Sat, 12 Dec 2015 02:45:15 -0500
+
 cross-gcc-defaults (0.8.2) unstable; urgency=medium
 
-  * control generator script re-written, allowing more
-    flexiblity
-  * rules file adjusted to accomodate the new generator
+  * control generator script re-written
 
  -- Denis Bychkov <manover@gmail.com>  Sat, 28 Nov 2015 20:04:26 -0500
 

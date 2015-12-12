@@ -28,7 +28,7 @@ PKG_DESC = {
 "g++": ([
     ("Package", "%(name)s-%(DEB_TARGET_GNU_TYPE)s"),
     ("Architecture", "all"),
-    ("Provides", "g++:%(DEB_TARGET_ARCH)s (= 4:%(Version)s), c++:%(DEB_TARGET_ARCH)s (= 4:%(Version)s), c++-compiler:%(DEB_TARGET_ARCH)s, c++abi2-dev:%(DEB_TARGET_ARCH)s, build-essential:%(DEB_TARGET_ARCH)s (= 12.1)"),
+    ("Provides", "g++-%(major)s:%(DEB_TARGET_ARCH)s (= 4:%(Version)s), g++:%(DEB_TARGET_ARCH)s (= 4:%(Version)s), c++:%(DEB_TARGET_ARCH)s (= 4:%(Version)s), c++-compiler:%(DEB_TARGET_ARCH)s, c++abi2-dev:%(DEB_TARGET_ARCH)s, build-essential:%(DEB_TARGET_ARCH)s (= 12.1)"),
     ("Depends", "%(name)s-%(major)s-%(DEB_TARGET_GNU_TYPE)s (>= %(Version)s), ${misc:Depends}"),
     ("Description", """GNU C++ cross-compiler
  This is the GNU C++ compiler built for cross-building %(DEB_TARGET_ARCH)s
